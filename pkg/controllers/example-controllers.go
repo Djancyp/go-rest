@@ -2,8 +2,12 @@ package controllers
 
 import (
 	"encoding/json"
-	"github.com/Djancyp/go-rest/pkg/models"
+	"fmt"
+	exampleModal "github.com/Djancyp/go-rest/pkg/models"
+	"github.com/Djancyp/go-rest/pkg/utils"
+	"github.com/gorilla/mux"
 	"net/http"
+	"strconv"
 )
 
 var newExample exampleModal.Example
@@ -21,8 +25,22 @@ func GetAllExamples(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateExample(w http.ResponseWriter, r *http.Request) {
-	var example = Example{ID: "2", Name: "Example2"}
-	res, _ := json.Marshal(example)
+	CreateExample := &exampleModal.Example{}
+	utils.ParsBody(r, CreateExample)
+	b := CreateExample.Create()
+	res, _ := json.Marshal(b)
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}
+func GetBookById(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	exampleId := vars["id"]
+	ID, err := strconv.ParseInt(exampleId, 0, 0)
+	if err != nil {
+		fmt.Println("Parsing error")
+	}
+	exampleDetails, _ := exampleModal.GetExampleById(ID)
+	res, _ := json.Marshal(exampleDetails)
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }

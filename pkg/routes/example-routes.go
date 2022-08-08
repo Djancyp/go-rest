@@ -7,5 +7,5 @@ import (
 
 var RegisterExampleRoutes = func(router *mux.Router) {
 	router.HandleFunc("/example", controllers.GetAllExamples).Methods("GET")
-	// router.HandleFunc("/example", controllers.CreateExample).Methods("POST")
+	router.HandleFunc("/example", controllers.CreateExample).Methods("POST")
 }
