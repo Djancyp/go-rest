@@ -15,7 +15,10 @@ func main() {
 	//end of register routers
 
 	http.Handle("/", r)
+	fmt.Println("========================================")
 	fmt.Println("Server is running, http://localhost:8080")
+	fmt.Println("========================================")
+	fmt.Println("")
 	log.Fatal(http.ListenAndServe(":8080", r))
 
 }
