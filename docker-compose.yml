@@ -31,7 +31,7 @@ services:
       context: .
       target: dev
     volumes:
-      - .:/opt/app/api
+      - ./api/:/opt/app/api
     ports:
       - '8080:8080'
     expose:

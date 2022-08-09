@@ -84,3 +84,97 @@
 2022/08/09 00:00:36 [notice] 12#12: start worker process 19
 2022/08/09 00:00:36 [notice] 12#12: start worker process 20
 2022/08/09 01:08:12 [notice] 19#19: signal 1 (SIGHUP) received, ignoring
+2022/08/09 06:53:50 [notice] 12#12: using the "epoll" event method
+2022/08/09 06:53:50 [notice] 12#12: nginx/1.22.0
+2022/08/09 06:53:50 [notice] 12#12: built by gcc 11.2.1 20220219 (Alpine 11.2.1_git20220219) 
+2022/08/09 06:53:50 [notice] 12#12: OS: Linux 5.13.0-52-generic
+2022/08/09 06:53:50 [notice] 12#12: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2022/08/09 06:53:50 [notice] 12#12: start worker processes
+2022/08/09 06:53:50 [notice] 12#12: start worker process 13
+2022/08/09 06:53:50 [notice] 12#12: start worker process 14
+2022/08/09 06:53:50 [notice] 12#12: start worker process 15
+2022/08/09 06:53:50 [notice] 12#12: start worker process 16
+2022/08/09 06:53:50 [notice] 12#12: start worker process 17
+2022/08/09 06:53:50 [notice] 12#12: start worker process 18
+2022/08/09 06:53:50 [notice] 12#12: start worker process 19
+2022/08/09 06:53:50 [notice] 12#12: start worker process 20
+2022/08/09 06:56:08 [notice] 9#9: using the "epoll" event method
+2022/08/09 06:56:08 [notice] 9#9: nginx/1.22.0
+2022/08/09 06:56:08 [notice] 9#9: built by gcc 11.2.1 20220219 (Alpine 11.2.1_git20220219) 
+2022/08/09 06:56:08 [notice] 9#9: OS: Linux 5.13.0-52-generic
+2022/08/09 06:56:08 [notice] 9#9: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2022/08/09 06:56:08 [notice] 9#9: start worker processes
+2022/08/09 06:56:08 [notice] 9#9: start worker process 10
+2022/08/09 06:56:08 [notice] 9#9: start worker process 11
+2022/08/09 06:56:08 [notice] 9#9: start worker process 12
+2022/08/09 06:56:08 [notice] 9#9: start worker process 13
+2022/08/09 06:56:08 [notice] 9#9: start worker process 14
+2022/08/09 06:56:08 [notice] 9#9: start worker process 15
+2022/08/09 06:56:08 [notice] 9#9: start worker process 16
+2022/08/09 06:56:08 [notice] 9#9: start worker process 17
+2022/08/09 06:57:00 [notice] 15#15: signal 1 (SIGHUP) received, ignoring
+2022/08/09 07:00:22 [notice] 9#9: using the "epoll" event method
+2022/08/09 07:00:22 [notice] 9#9: nginx/1.22.0
+2022/08/09 07:00:22 [notice] 9#9: built by gcc 11.2.1 20220219 (Alpine 11.2.1_git20220219) 
+2022/08/09 07:00:22 [notice] 9#9: OS: Linux 5.13.0-52-generic
+2022/08/09 07:00:22 [notice] 9#9: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2022/08/09 07:00:22 [notice] 9#9: start worker processes
+2022/08/09 07:00:22 [notice] 9#9: start worker process 10
+2022/08/09 07:00:22 [notice] 9#9: start worker process 11
+2022/08/09 07:00:22 [notice] 9#9: start worker process 12
+2022/08/09 07:00:22 [notice] 9#9: start worker process 13
+2022/08/09 07:00:22 [notice] 9#9: start worker process 14
+2022/08/09 07:00:22 [notice] 9#9: start worker process 15
+2022/08/09 07:00:22 [notice] 9#9: start worker process 16
+2022/08/09 07:00:22 [notice] 9#9: start worker process 17
+2022/08/09 07:01:01 [notice] 15#15: signal 1 (SIGHUP) received, ignoring
+2022/08/09 07:01:01 [notice] 16#16: signal 1 (SIGHUP) received, ignoring
+2022/08/09 07:01:01 [notice] 14#14: signal 1 (SIGHUP) received, ignoring
+2022/08/09 07:01:01 [notice] 13#13: signal 1 (SIGHUP) received, ignoring
+2022/08/09 07:01:01 [notice] 17#17: signal 1 (SIGHUP) received, ignoring
+2022/08/09 07:01:01 [notice] 11#11: signal 1 (SIGHUP) received, ignoring
+2022/08/09 07:01:01 [notice] 12#12: signal 1 (SIGHUP) received, ignoring
+2022/08/09 07:01:01 [notice] 10#10: signal 1 (SIGHUP) received, ignoring
+2022/08/09 07:01:04 [notice] 9#9: using the "epoll" event method
+2022/08/09 07:01:04 [notice] 9#9: nginx/1.22.0
+2022/08/09 07:01:04 [notice] 9#9: built by gcc 11.2.1 20220219 (Alpine 11.2.1_git20220219) 
+2022/08/09 07:01:04 [notice] 9#9: OS: Linux 5.13.0-52-generic
+2022/08/09 07:01:04 [notice] 9#9: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2022/08/09 07:01:04 [notice] 9#9: start worker processes
+2022/08/09 07:01:04 [notice] 9#9: start worker process 10
+2022/08/09 07:01:04 [notice] 9#9: start worker process 11
+2022/08/09 07:01:04 [notice] 9#9: start worker process 12
+2022/08/09 07:01:04 [notice] 9#9: start worker process 13
+2022/08/09 07:01:04 [notice] 9#9: start worker process 14
+2022/08/09 07:01:04 [notice] 9#9: start worker process 15
+2022/08/09 07:01:04 [notice] 9#9: start worker process 16
+2022/08/09 07:01:04 [notice] 9#9: start worker process 17
+2022/08/09 07:02:42 [notice] 15#15: signal 1 (SIGHUP) received, ignoring
+2022/08/09 07:02:47 [notice] 9#9: using the "epoll" event method
+2022/08/09 07:02:47 [notice] 9#9: nginx/1.22.0
+2022/08/09 07:02:47 [notice] 9#9: built by gcc 11.2.1 20220219 (Alpine 11.2.1_git20220219) 
+2022/08/09 07:02:47 [notice] 9#9: OS: Linux 5.13.0-52-generic
+2022/08/09 07:02:47 [notice] 9#9: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2022/08/09 07:02:47 [notice] 9#9: start worker processes
+2022/08/09 07:02:47 [notice] 9#9: start worker process 10
+2022/08/09 07:02:47 [notice] 9#9: start worker process 11
+2022/08/09 07:02:47 [notice] 9#9: start worker process 12
+2022/08/09 07:02:47 [notice] 9#9: start worker process 13
+2022/08/09 07:02:47 [notice] 9#9: start worker process 14
+2022/08/09 07:02:47 [notice] 9#9: start worker process 15
+2022/08/09 07:02:47 [notice] 9#9: start worker process 16
+2022/08/09 07:02:47 [notice] 9#9: start worker process 17
+2022/08/09 07:04:15 [notice] 9#9: using the "epoll" event method
+2022/08/09 07:04:15 [notice] 9#9: nginx/1.22.0
+2022/08/09 07:04:15 [notice] 9#9: built by gcc 11.2.1 20220219 (Alpine 11.2.1_git20220219) 
+2022/08/09 07:04:15 [notice] 9#9: OS: Linux 5.13.0-52-generic
+2022/08/09 07:04:15 [notice] 9#9: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2022/08/09 07:04:15 [notice] 9#9: start worker processes
+2022/08/09 07:04:15 [notice] 9#9: start worker process 10
+2022/08/09 07:04:15 [notice] 9#9: start worker process 11
+2022/08/09 07:04:15 [notice] 9#9: start worker process 12
+2022/08/09 07:04:15 [notice] 9#9: start worker process 13
+2022/08/09 07:04:15 [notice] 9#9: start worker process 14
+2022/08/09 07:04:15 [notice] 9#9: start worker process 15
+2022/08/09 07:04:15 [notice] 9#9: start worker process 16
+2022/08/09 07:04:15 [notice] 9#9: start worker process 17
