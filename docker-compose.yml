@@ -14,6 +14,8 @@ services:
     environment:
       NGINX_ENV: development
     env_file: .env
+    depends_on:
+      - db
     ports:
       - '80:80'
       - '443:443'
@@ -27,11 +29,12 @@ services:
   app:
     container_name: ${PROJECT_NAME}-api
     build:
-      dockerfile: ./docker/golang/Dockerfile
-      context: .
+      dockerfile: ./Dockerfile
+      context: docker/golang
       target: dev
     volumes:
       - ./api/:/opt/app/api
+    restart: always
     ports:
       - '8080:8080'
     expose:
@@ -41,6 +44,8 @@ services:
         ipv4_address: ${API_CONTAINER_IP}
     depends_on:
       - db
+    entrypoint: ['/etc/wait/wait-for-it.sh', 'db:3306', '--']
+    command: ['air']
 
   # Mysql Database
   db:
