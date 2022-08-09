@@ -9,7 +9,7 @@ nginx , mysql and api(Golang).
 
 ### Nginx
 - https2 configuration
-- automate script for /etc/hosts ( so you can use https://www.<yourdomain>.com for your local development)
+- automate script for /etc/hosts ( so you can use https://www.yourdomain.com for your local development)
 
 ### Mysql
 Can be swap with any db container but I like to use mysql.
