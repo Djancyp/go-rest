@@ -11,6 +11,7 @@ var RegisterExampleRoutes = func(router *mux.Router) {
 	//midlewares
 	router.Use(middlewares.ReguestLogger)
 	router.Use(middlewares.Cors)
+	router.Use(middlewares.Session)
 	//routers
 	router.HandleFunc("/", controllers.GetAllExamples).Methods("GET")
 	router.HandleFunc("/example", controllers.GetAllExamples).Methods("GET")

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/Djancyp/go-rest/pkg/routes"
+	exampleRoutes "github.com/Djancyp/go-rest/pkg/routes"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
