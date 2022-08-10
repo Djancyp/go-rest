@@ -69,3 +69,38 @@
 2022/08/10 08:15:04 [notice] 10#10: start worker process 16
 2022/08/10 08:15:04 [notice] 10#10: start worker process 17
 2022/08/10 08:15:04 [notice] 10#10: start worker process 18
+2022/08/10 13:08:55 [notice] 18#18: signal 1 (SIGHUP) received, ignoring
+2022/08/10 13:08:55 [notice] 15#15: signal 1 (SIGHUP) received, ignoring
+2022/08/10 13:08:55 [notice] 14#14: signal 1 (SIGHUP) received, ignoring
+2022/08/10 13:08:55 [notice] 17#17: signal 1 (SIGHUP) received, ignoring
+2022/08/10 13:08:55 [notice] 12#12: signal 1 (SIGHUP) received, ignoring
+2022/08/10 13:08:55 [notice] 13#13: signal 1 (SIGHUP) received, ignoring
+2022/08/10 13:08:55 [notice] 16#16: signal 1 (SIGHUP) received, ignoring
+2022/08/10 13:09:02 [notice] 10#10: using the "epoll" event method
+2022/08/10 13:09:02 [notice] 10#10: nginx/1.22.0
+2022/08/10 13:09:02 [notice] 10#10: built by gcc 11.2.1 20220219 (Alpine 11.2.1_git20220219) 
+2022/08/10 13:09:02 [notice] 10#10: OS: Linux 5.13.0-52-generic
+2022/08/10 13:09:02 [notice] 10#10: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2022/08/10 13:09:02 [notice] 10#10: start worker processes
+2022/08/10 13:09:02 [notice] 10#10: start worker process 11
+2022/08/10 13:09:02 [notice] 10#10: start worker process 12
+2022/08/10 13:09:02 [notice] 10#10: start worker process 13
+2022/08/10 13:09:02 [notice] 10#10: start worker process 14
+2022/08/10 13:09:02 [notice] 10#10: start worker process 15
+2022/08/10 13:09:02 [notice] 10#10: start worker process 16
+2022/08/10 13:09:02 [notice] 10#10: start worker process 17
+2022/08/10 13:09:02 [notice] 10#10: start worker process 18
+2022/08/10 13:28:24 [notice] 9#9: using the "epoll" event method
+2022/08/10 13:28:24 [notice] 9#9: nginx/1.22.0
+2022/08/10 13:28:24 [notice] 9#9: built by gcc 11.2.1 20220219 (Alpine 11.2.1_git20220219) 
+2022/08/10 13:28:24 [notice] 9#9: OS: Linux 5.13.0-52-generic
+2022/08/10 13:28:24 [notice] 9#9: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2022/08/10 13:28:24 [notice] 9#9: start worker processes
+2022/08/10 13:28:24 [notice] 9#9: start worker process 10
+2022/08/10 13:28:24 [notice] 9#9: start worker process 11
+2022/08/10 13:28:24 [notice] 9#9: start worker process 12
+2022/08/10 13:28:24 [notice] 9#9: start worker process 13
+2022/08/10 13:28:24 [notice] 9#9: start worker process 14
+2022/08/10 13:28:24 [notice] 9#9: start worker process 15
+2022/08/10 13:28:24 [notice] 9#9: start worker process 16
+2022/08/10 13:28:24 [notice] 9#9: start worker process 17

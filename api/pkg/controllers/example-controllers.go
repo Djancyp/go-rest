@@ -3,14 +3,12 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	exampleModal "github.com/Djancyp/go-rest/pkg/models"
+	models "github.com/Djancyp/go-rest/pkg/models"
 	"github.com/Djancyp/go-rest/pkg/utils"
 	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
 )
-
-var newExample exampleModal.Example
 
 type Example struct {
 	ID   string `json:"id"`
@@ -18,14 +16,14 @@ type Example struct {
 }
 
 func GetAllExamples(w http.ResponseWriter, r *http.Request) {
-	example := exampleModal.GetAllExamples()
+	example := models.GetAllExamples()
 	res, _ := json.Marshal(example)
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
 
 func CreateExample(w http.ResponseWriter, r *http.Request) {
-	CreateExample := &exampleModal.Example{}
+	CreateExample := &models.Example{}
 	utils.ParsBody(r, CreateExample)
 	b := CreateExample.Create()
 	res, _ := json.Marshal(b)
@@ -39,7 +37,7 @@ func GetBookById(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println("Parsing error")
 	}
-	exampleDetails, _ := exampleModal.GetExampleById(ID)
+	exampleDetails, _ := models.GetExampleById(ID)
 	res, _ := json.Marshal(exampleDetails)
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
@@ -52,7 +50,7 @@ func DeleteExample(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println("Parsing error")
 	}
-	exampleDetails, _ := exampleModal.DeleteExampleById(ID)
+	exampleDetails, _ := models.DeleteExampleById(ID)
 	res, _ := json.Marshal(exampleDetails)
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
@@ -65,7 +63,7 @@ func UpdateExampleById(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println("Parsing error")
 	}
-	updateExample := &exampleModal.Example{}
+	updateExample := &models.Example{}
 	utils.ParsBody(r, updateExample)
 	b, _ := updateExample.UpdateExample(ID)
 	res, _ := json.Marshal(b)
