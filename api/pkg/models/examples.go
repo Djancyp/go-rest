@@ -34,9 +34,6 @@ func DeleteExampleById(Id int64) (*Example, *gorm.DB) {
 
 func (e *Example) UpdateExample(Id int64) (*Example, *gorm.DB) {
 	var updateExample Example
-	db.Model(&updateExample).Updates(e)
-	db.Where("id = ?", Id).First(&updateExample)
-	db.Save(&e)
-
+	db.Model(&updateExample).Where("id = ?", Id).Updates(e)
 	return &updateExample, db
 }
