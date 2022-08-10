@@ -3,6 +3,7 @@ package middlewares
 import (
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -11,11 +12,8 @@ func ReguestLogger(next http.Handler) http.Handler {
 		start := time.Now()
 		fmt.Printf("\033[1;36m%s %s\033[0m", r.Method, r.URL.Path)
 		next.ServeHTTP(w, r)
-		end := time.Now()
-		diff := end.Sub(start).String()
-		ms, _ := time.ParseDuration(diff)
-		//float ms to 2 decimal places
-		fmt.Printf("%12v\n", ms.Round(time.Millisecond))
+		end := time.Since(start) / (100 * time.Microsecond) * 100 * time.Microsecond
+		fmt.Printf("%12v\n", strings.Replace(end.String(), "µ", "u", 1))
 	})
 }
 

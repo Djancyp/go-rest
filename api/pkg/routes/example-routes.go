@@ -11,12 +11,13 @@ var RegisterExampleRoutes = func(router *mux.Router) {
 	//midlewares
 	router.Use(middlewares.ReguestLogger)
 	router.Use(middlewares.Cors)
-	router.Use(middlewares.Session)
 	//routers
 	router.HandleFunc("/", controllers.GetAllExamples).Methods("GET")
 	router.HandleFunc("/example", controllers.GetAllExamples).Methods("GET")
 	router.HandleFunc("/example/{id}", controllers.GetBookById).Methods("GET")
 	router.HandleFunc("/example", controllers.CreateExample).Methods("POST")
+	router.HandleFunc("/example/{id}", controllers.DeleteExample).Methods("DELETE")
+	router.HandleFunc("/example/{id}", controllers.UpdateExampleById).Methods("PUT")
 }
 
 func Auth(HandlerFunc http.HandlerFunc) http.HandlerFunc {

@@ -35,3 +35,17 @@ func GetExampleById(Id int64) (*Example, *gorm.DB) {
 	db := db.Where("id = ?", Id).First(&getExample)
 	return &getExample, db
 }
+func DeleteExampleById(Id int64) (*Example, *gorm.DB) {
+	var deleteExample Example
+	db := db.Where("id = ?", Id).Delete(&deleteExample)
+	return &deleteExample, db
+}
+
+func (e *Example) UpdateExample(Id int64) (*Example, *gorm.DB) {
+	var updateExample Example
+	db.Model(&updateExample).Updates(e)
+	db.Where("id = ?", Id).First(&updateExample)
+	db.Save(&e)
+
+	return &updateExample, db
+}

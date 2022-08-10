@@ -44,3 +44,31 @@ func GetBookById(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
+
+func DeleteExample(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	exampleId := vars["id"]
+	ID, err := strconv.ParseInt(exampleId, 0, 0)
+	if err != nil {
+		fmt.Println("Parsing error")
+	}
+	exampleDetails, _ := exampleModal.DeleteExampleById(ID)
+	res, _ := json.Marshal(exampleDetails)
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}
+
+func UpdateExampleById(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	exampleId := vars["id"]
+	ID, err := strconv.ParseInt(exampleId, 0, 0)
+	if err != nil {
+		fmt.Println("Parsing error")
+	}
+	updateExample := &exampleModal.Example{}
+	utils.ParsBody(r, updateExample)
+	b, _ := updateExample.UpdateExample(ID)
+	res, _ := json.Marshal(b)
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}
