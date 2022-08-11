@@ -10,11 +10,6 @@ import (
 	"strconv"
 )
 
-type Example struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-}
-
 func GetAllExamples(w http.ResponseWriter, r *http.Request) {
 	example := models.GetAllExamples()
 	res, _ := json.Marshal(example)

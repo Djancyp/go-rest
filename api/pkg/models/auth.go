@@ -1,16 +1,53 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/golang-jwt/jwt/v4"
+	"github.com/jinzhu/gorm"
+	"golang.org/x/crypto/bcrypt"
+)
 
-type Users struct {
+type User struct {
 	gorm.Model
-	UserName     string
-	Password     string
-	RefreshToken string
-	Role         []Roles `gorm:"many2many:user_role;"`
+	Email        string `gorm:"unique;not null" json:"email"`
+	Password     string `gorm:"not null" json:"password"`
+	RefreshToken string `gorm:"not null" json:"refresh_token"`
+	Role         []Role `gorm:"many2many:user_role;"`
 }
-type Roles struct {
+type Role struct {
 	gorm.Model
 	Name string
-	User []*Users `gorm:"many2many:user_role;"`
+	User []*User `gorm:"many2many:user_role;"`
+}
+
+type Login struct {
+	Email      string `gorm:"unique;not null" json:"email"`
+	Password   string `gorm:"not null" json:"password" json:"-"`
+	Auth_token string `json:"auth_token"`
+}
+type Claims struct {
+	Username string `json:"username"`
+	jwt.StandardClaims
+}
+
+func (e *Login) Login() (*User, *gorm.DB) {
+	var user User
+	db := db.Where(map[string]interface{}{"email": e.Email}).First(&user)
+	if db.First(&user).RecordNotFound() {
+		return nil, db
+	}
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(e.Password))
+	if err != nil {
+		return nil, db
+	}
+	return &user, db
+}
+func (e *User) Register() *User {
+	password, _ := bcrypt.GenerateFromPassword([]byte(e.Password), 12)
+	user := User{
+		Email:    e.Email,
+		Password: string(password),
+	}
+	db.NewRecord(user)
+	db.Create(&user)
+	return &user
 }

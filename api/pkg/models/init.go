@@ -11,8 +11,7 @@ func init() {
 	config.Connect()
 	db = config.GetDB()
 	db.AutoMigrate(&Example{})
-	db.AutoMigrate(&Users{})
-	db.AutoMigrate(&Roles{})
+	db.AutoMigrate(&User{})
+	db.AutoMigrate(&Role{})
 
 }
-
