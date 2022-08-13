@@ -25,11 +25,13 @@ func LoginAuth(w http.ResponseWriter, r *http.Request) {
 	if b == nil {
 		errMessage.Message = "Unauthorized"
 		utils.ReturnErr(w, r, errMessage, 401)
+		return
 	}
 	token, expirationTime, err := utils.CreateJwtWithClaim(b.Email)
 	if err != nil {
 		errMessage.Message = "StatusInternalServerError"
 		utils.ReturnErr(w, r, errMessage, 500)
+		return
 	}
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
@@ -51,7 +53,7 @@ func AuthRegister(w http.ResponseWriter, r *http.Request) {
 	utils.ParsBody(r, register)
 	b, err := register.Register()
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		utils.ReturnErr(w, r, err, http.StatusBadRequest)
 		return
 	}
 	returnUser := &RegisterRes{
@@ -71,14 +73,17 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 		if err == http.ErrNoCookie {
 			errRespose.Message = "Unauthorized"
 			utils.ReturnErr(w, r, errRespose, http.StatusUnauthorized)
+			return
 		}
 		errRespose.Message = "Bad Request"
-		utils.ReturnErr(w, r, errRespose, http.StatusBadRequest)
+		utils.ReturnErr(w, r, errRespose, http.StatusUnauthorized)
+		return
 	}
 	tokenStr := cookie.Value
 	token, expirationTime, err := utils.RefreshJwt(tokenStr)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		errRespose.Message = "Unauthorized"
+		utils.ReturnErr(w, r, errRespose, http.StatusInternalServerError)
 		return
 	}
 
@@ -88,8 +93,8 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 		Expires: expirationTime,
 	})
 
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(errRespose["message"]))
+	errRespose.Message = "Success"
+	utils.ReturnSuccses(w, r, errRespose)
 }
 func ChangePassword(w http.ResponseWriter, r *http.Request) {
 	//TODO: get user by id
