@@ -8,7 +8,6 @@ import (
 
 type User struct {
 	gorm.Model
-	ID              uint   `json:"id"`
 	Email           string `gorm:"unique;not null" json:"email"`
 	Password        string `gorm:"not null" json:"password"`
 	Activation_code string `gorm:"not null" json:"refresh_token"`
@@ -17,7 +16,6 @@ type User struct {
 }
 type Role struct {
 	gorm.Model
-	ID   uint `json:"id"`
 	Name string
 }
 

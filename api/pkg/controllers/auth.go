@@ -19,7 +19,7 @@ var jwtKey = []byte("my_secret_key")
 var expirationTime = time.Now().Add(1 * time.Minute)
 
 type Claims struct {
-	Username uint `json:"username"`
+	Username string `json:"username"`
 	jwt.StandardClaims
 }
 
@@ -36,9 +36,9 @@ func LoginAuth(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	claims := &Claims{
-		Username: b.ID,
+		Username: b.Email,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expirationTime.Unix(),
+			ExpiresAt: time.Now().Add(1 * time.Minute).Unix(),
 		},
 	}
 
@@ -51,11 +51,10 @@ func LoginAuth(w http.ResponseWriter, r *http.Request) {
 		w.Write(res)
 		return
 	}
-
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   tokenString,
-		Expires: expirationTime,
+		Expires: time.Now().Add(1 * time.Minute),
 	})
 	succsesRespond := map[string]string{}
 	succsesRespond["message"] = "success"
@@ -67,6 +66,7 @@ func AuthRegister(w http.ResponseWriter, r *http.Request) {
 	register := &models.User{}
 	utils.ParsBody(r, register)
 	b := register.Register()
+	b.Password = ""
 	res, _ := json.Marshal(b)
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
@@ -113,13 +113,9 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
-	fmt.Println(time.Unix(claims.ExpiresAt, 0).Sub(time.Now()))
 
-	if time.Unix(claims.ExpiresAt, 0).Sub(time.Now()) > 30*time.Second {
-		// fmt.Println(time.Unix(claims.ExpiresAt, 0).Sub(time.Now()))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
+	claims.ExpiresAt = time.Now().Add(1 * time.Minute).Unix()
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
@@ -130,7 +126,7 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   tokenString,
-		Expires: expirationTime,
+		Expires: time.Now().Add(1 * time.Minute),
 	})
 
 	w.WriteHeader(http.StatusOK)
@@ -152,7 +148,7 @@ func PassworRecovery(w http.ResponseWriter, r *http.Request) {
 	}
 	errRespose := map[string]string{}
 	claims := &Claims{
-		Username: user.ID,
+		Username: user.Email,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},
@@ -169,11 +165,6 @@ func PassworRecovery(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Println(tokenString)
-	// http.SetCookie(w, &http.Cookie{
-	// 	Name:    "token",
-	// 	Value:   tokenString,
-	// 	Expires: expirationTime,
-	// })
 	succsesRespond := map[string]string{}
 	succsesRespond["message"] = "success"
 	res, _ := json.Marshal(succsesRespond)
@@ -188,19 +179,23 @@ func PassworRecovery(w http.ResponseWriter, r *http.Request) {
 func Auth(HandlerFunc http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cookie, err := r.Cookie("token")
+		resMessage := map[string]string{}
 		if err != nil {
 			if err == http.ErrNoCookie {
 				w.WriteHeader(http.StatusUnauthorized)
+				resMessage["message"] = "No token"
+				w.Write([]byte(resMessage["message"]))
 				return
 			}
 			w.WriteHeader(http.StatusBadRequest)
+			resMessage["message"] = "There is issue with this cookie"
+			w.Write([]byte(resMessage["message"]))
+
 			return
 		}
 		tokenStr := cookie.Value
 		claims := &Claims{}
-		fmt.Println(claims)
 		tkn, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
-			w.WriteHeader(http.StatusUnauthorized)
 			return jwtKey, nil
 		})
 
@@ -216,6 +211,7 @@ func Auth(HandlerFunc http.HandlerFunc) http.HandlerFunc {
 			w.WriteHeader(http.StatusUnauthorized)
 			return
 		}
+		w.WriteHeader(http.StatusOK)
 		HandlerFunc(w, r)
 	}
 }
