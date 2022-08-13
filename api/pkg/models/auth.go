@@ -2,12 +2,11 @@ package models
 
 import (
 	"fmt"
-	"time"
-
 	"github.com/Djancyp/go-rest/pkg/utils"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
+	"time"
 )
 
 type User struct {
@@ -38,7 +37,6 @@ type Claims struct {
 func (e *Login) Login() (*User, *gorm.DB) {
 	var user User
 	db := db.Table("users").Where("email = ?", e.Email).Scan(&user)
-	fmt.Println(user)
 	if db.First(&user).RecordNotFound() {
 		return nil, db
 	}
@@ -65,7 +63,22 @@ func (e *User) Register() (*User, error) {
 	db.Create(&user)
 	return &user, nil
 }
+func (e *User) UpdatePassword() (*User, *gorm.DB) {
+	fmt.Println(e.Password)
+	var user User
+	db := db.Table("users").Where("email = ?", e.Email).Scan(&user)
+	if db.First(&user).RecordNotFound() {
+		return nil, db
+	}
+	password, _ := bcrypt.GenerateFromPassword([]byte(e.Password), 12)
+	userSave := User{
+		Email:    e.Email,
+		Password: string(password),
+	}
 
+	db.Model(&user).Where("email = ?", e.Email).Updates(userSave)
+	return &user, db
+}
 func GetUserById(Id uint64) (*User, *gorm.DB) {
 	var user User
 	db := db.Where("id = ?", Id).Find(&user)

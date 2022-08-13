@@ -10,7 +10,7 @@ var jwtKey = []byte("my_secret_key")
 var expireMinute = 1
 
 type Claims struct {
-	Username string `json:"username"`
+	Email string `json:"username"`
 	jwt.StandardClaims
 }
 
@@ -20,11 +20,11 @@ func CreateJwtString() string {
 	return tokenString
 }
 
-func CreateJwtWithClaim(username string) (string, time.Time, error) {
+func CreateJwtWithClaim(email string) (string, time.Time, error) {
 	var expirationTime = time.Now().Add(1 * time.Minute)
 
 	claims := &Claims{
-		Username: username,
+		Email: email,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},
@@ -64,4 +64,11 @@ func ValidateJwt(token string) (*jwt.Token, error) {
 		return jwtKey, nil
 	})
 	return tkn, err
+}
+func GetJwtClaims(token string) (*Claims, error) {
+	claims := &Claims{}
+	_, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
+		return jwtKey, nil
+	})
+	return claims, err
 }

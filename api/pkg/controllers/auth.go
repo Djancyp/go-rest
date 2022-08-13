@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	models "github.com/Djancyp/go-rest/pkg/models"
@@ -97,7 +96,19 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 	utils.ReturnSuccses(w, r, errRespose)
 }
 func ChangePassword(w http.ResponseWriter, r *http.Request) {
-	//TODO: get user by id
+	resMessage := ErrMessage{}
+	user := &models.User{}
+	cookie, _ := r.Cookie("token")
+	claims, _ := utils.GetJwtClaims(cookie.Value)
+	user.Email = claims.Email
+	utils.ParsBody(r, user)
+	b, _ := user.UpdatePassword()
+	if b == nil {
+		resMessage.Message = "Unauthorized"
+		utils.ReturnErr(w, r, resMessage, http.StatusUnauthorized)
+		return
+	}
+
 }
 func PassworRecovery(w http.ResponseWriter, r *http.Request) {
 	var body = &Body{}
@@ -108,12 +119,11 @@ func PassworRecovery(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// check if  email exist in DB
-	h, user := models.EmailValidate(body.Email)
+	h, _ := models.EmailValidate(body.Email)
 	if h == false {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	fmt.Println(user)
 	succsesRespond := map[string]string{}
 	succsesRespond["message"] = "success"
 	res, _ := json.Marshal(succsesRespond)
@@ -128,25 +138,22 @@ func PassworRecovery(w http.ResponseWriter, r *http.Request) {
 func Auth(HandlerFunc http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cookie, err := r.Cookie("token")
-		resMessage := map[string]string{}
+		var resMessage ErrMessage
 		if err != nil {
 			if err == http.ErrNoCookie {
-				w.WriteHeader(http.StatusUnauthorized)
-				resMessage["message"] = "Unauthozie Request"
-				w.Write([]byte(resMessage["message"]))
+				resMessage.Message = "Unauthorized"
+				utils.ReturnErr(w, r, resMessage, http.StatusInternalServerError)
 				return
 			}
-			w.WriteHeader(http.StatusBadRequest)
-			resMessage["message"] = "There is issue with this cookie"
-			w.Write([]byte(resMessage["message"]))
-
+			resMessage.Message = "Bad Request"
+			utils.ReturnErr(w, r, resMessage, http.StatusBadRequest)
 			return
+
 		}
 		tkn, err := utils.ValidateJwt(cookie.Value)
 		if err != nil || !tkn.Valid {
-			w.WriteHeader(http.StatusUnauthorized)
-			resMessage["message"] = "Unauthorized"
-			w.Write([]byte(resMessage["message"]))
+			resMessage.Message = "Unauthorized"
+			utils.ReturnErr(w, r, resMessage, http.StatusUnauthorized)
 			return
 		}
 		w.WriteHeader(http.StatusOK)

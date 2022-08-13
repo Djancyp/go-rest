@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	models "github.com/Djancyp/go-rest/pkg/models"
 	"github.com/Djancyp/go-rest/pkg/utils"
 	"github.com/gorilla/mux"
@@ -30,7 +29,8 @@ func GetBookById(w http.ResponseWriter, r *http.Request) {
 	exampleId := vars["id"]
 	ID, err := strconv.ParseInt(exampleId, 0, 0)
 	if err != nil {
-		fmt.Println("Parsing error")
+		utils.ReturnErr(w, r, err, http.StatusBadRequest)
+		return
 	}
 	exampleDetails, _ := models.GetExampleById(ID)
 	res, _ := json.Marshal(exampleDetails)
@@ -43,7 +43,8 @@ func DeleteExample(w http.ResponseWriter, r *http.Request) {
 	exampleId := vars["id"]
 	ID, err := strconv.ParseInt(exampleId, 0, 0)
 	if err != nil {
-		fmt.Println("Parsing error")
+		utils.ReturnErr(w, r, err, http.StatusBadRequest)
+		return
 	}
 	exampleDetails, _ := models.DeleteExampleById(ID)
 	res, _ := json.Marshal(exampleDetails)
@@ -56,7 +57,8 @@ func UpdateExampleById(w http.ResponseWriter, r *http.Request) {
 	exampleId := vars["id"]
 	ID, err := strconv.ParseInt(exampleId, 0, 0)
 	if err != nil {
-		fmt.Println("Parsing error")
+		utils.ReturnErr(w, r, err, http.StatusBadRequest)
+		return
 	}
 	updateExample := &models.Example{}
 	utils.ParsBody(r, updateExample)
