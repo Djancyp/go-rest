@@ -3,25 +3,10 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
-	"time"
-
 	models "github.com/Djancyp/go-rest/pkg/models"
 	"github.com/Djancyp/go-rest/pkg/utils"
-	"github.com/golang-jwt/jwt/v4"
+	"net/http"
 )
-
-// Create the JWT key used to create the signature
-// TODO: move my_secret_key to .env
-var jwtKey = []byte("my_secret_key")
-
-// TODO: get value from .env
-var expirationTime = time.Now().Add(1 * time.Minute)
-
-type Claims struct {
-	Username string `json:"username"`
-	jwt.StandardClaims
-}
 
 func LoginAuth(w http.ResponseWriter, r *http.Request) {
 	LoginAuth := &models.Login{}
@@ -35,15 +20,7 @@ func LoginAuth(w http.ResponseWriter, r *http.Request) {
 		w.Write(res)
 		return
 	}
-	claims := &Claims{
-		Username: b.Email,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(1 * time.Minute).Unix(),
-		},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString(jwtKey)
+	token, expirationTime, err := utils.CreateJwtWithClaim(b.Email)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		errRespose["message"] = "Internal Sercer Error"
@@ -53,8 +30,8 @@ func LoginAuth(w http.ResponseWriter, r *http.Request) {
 	}
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
-		Value:   tokenString,
-		Expires: time.Now().Add(1 * time.Minute),
+		Value:   token,
+		Expires: expirationTime,
 	})
 	succsesRespond := map[string]string{}
 	succsesRespond["message"] = "success"
@@ -90,34 +67,7 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	tokenStr := cookie.Value
-	claims := &Claims{}
-	tkn, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
-		return jwtKey, nil
-	})
-
-	if err != nil {
-		if err == jwt.ErrSignatureInvalid {
-			w.WriteHeader(http.StatusUnauthorized)
-			errRespose["message"] = "Unauthorized 2"
-			w.Write([]byte(errRespose["message"]))
-
-			return
-		}
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	if !tkn.Valid {
-		w.WriteHeader(http.StatusUnauthorized)
-		errRespose["message"] = "Unauthorized token"
-		w.Write([]byte(errRespose["message"]))
-
-		return
-	}
-
-	claims.ExpiresAt = time.Now().Add(1 * time.Minute).Unix()
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString(jwtKey)
+	token, expirationTime, err := utils.RefreshJwt(tokenStr)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -125,12 +75,15 @@ func Refresh(w http.ResponseWriter, r *http.Request) {
 
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
-		Value:   tokenString,
-		Expires: time.Now().Add(1 * time.Minute),
+		Value:   token,
+		Expires: expirationTime,
 	})
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(errRespose["message"]))
+}
+func ChangePassword(w http.ResponseWriter, r *http.Request) {
+	//TODO: get user by id
 }
 func PassworRecovery(w http.ResponseWriter, r *http.Request) {
 	var body = &Body{}
@@ -146,25 +99,7 @@ func PassworRecovery(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	errRespose := map[string]string{}
-	claims := &Claims{
-		Username: user.Email,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expirationTime.Unix(),
-		},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString(jwtKey)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		errRespose["message"] = "Internal Sercer Error"
-		res, _ := json.Marshal(errRespose)
-		w.Write(res)
-		return
-	}
-
-	fmt.Println(tokenString)
+	fmt.Println(user)
 	succsesRespond := map[string]string{}
 	succsesRespond["message"] = "success"
 	res, _ := json.Marshal(succsesRespond)
@@ -194,21 +129,11 @@ func Auth(HandlerFunc http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 		tokenStr := cookie.Value
-		claims := &Claims{}
-		tkn, err := jwt.ParseWithClaims(tokenStr, claims, func(token *jwt.Token) (interface{}, error) {
-			return jwtKey, nil
-		})
-
-		if err != nil {
-			if err == jwt.ErrSignatureInvalid {
-				w.WriteHeader(http.StatusUnauthorized)
-				return
-			}
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-		if !tkn.Valid {
+		tkn, err := utils.ValidateJwt(tokenStr)
+		if err != nil || !tkn.Valid {
 			w.WriteHeader(http.StatusUnauthorized)
+			resMessage["message"] = "Unauthorized"
+			w.Write([]byte(resMessage["message"]))
 			return
 		}
 		w.WriteHeader(http.StatusOK)
