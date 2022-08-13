@@ -39,12 +39,26 @@ func LoginAuth(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
+
+type RegisterRes struct {
+	Email string `json:"email"`
+}
+
 func AuthRegister(w http.ResponseWriter, r *http.Request) {
 	register := &models.User{}
 	utils.ParsBody(r, register)
-	b := register.Register()
+	b, err := register.Register()
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	b.Password = ""
-	res, _ := json.Marshal(b)
+	b.Token = ""
+	returnUser := &RegisterRes{
+		Email: b.Email,
+	}
+	res, _ := json.Marshal(returnUser)
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
@@ -118,7 +132,7 @@ func Auth(HandlerFunc http.HandlerFunc) http.HandlerFunc {
 		if err != nil {
 			if err == http.ErrNoCookie {
 				w.WriteHeader(http.StatusUnauthorized)
-				resMessage["message"] = "No token"
+				resMessage["message"] = "Unauthozie Request"
 				w.Write([]byte(resMessage["message"]))
 				return
 			}
@@ -128,8 +142,7 @@ func Auth(HandlerFunc http.HandlerFunc) http.HandlerFunc {
 
 			return
 		}
-		tokenStr := cookie.Value
-		tkn, err := utils.ValidateJwt(tokenStr)
+		tkn, err := utils.ValidateJwt(cookie.Value)
 		if err != nil || !tkn.Valid {
 			w.WriteHeader(http.StatusUnauthorized)
 			resMessage["message"] = "Unauthorized"

@@ -223,3 +223,31 @@
 2022/08/12 16:23:23 [notice] 9#9: start worker process 15
 2022/08/12 16:23:23 [notice] 9#9: start worker process 16
 2022/08/12 16:23:23 [notice] 9#9: start worker process 17
+2022/08/13 10:48:05 [notice] 9#9: using the "epoll" event method
+2022/08/13 10:48:05 [notice] 9#9: nginx/1.22.0
+2022/08/13 10:48:05 [notice] 9#9: built by gcc 11.2.1 20220219 (Alpine 11.2.1_git20220219) 
+2022/08/13 10:48:05 [notice] 9#9: OS: Linux 5.15.0-46-generic
+2022/08/13 10:48:05 [notice] 9#9: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2022/08/13 10:48:05 [notice] 9#9: start worker processes
+2022/08/13 10:48:05 [notice] 9#9: start worker process 10
+2022/08/13 10:48:05 [notice] 9#9: start worker process 11
+2022/08/13 10:48:05 [notice] 9#9: start worker process 12
+2022/08/13 10:48:05 [notice] 9#9: start worker process 13
+2022/08/13 10:48:05 [notice] 9#9: start worker process 14
+2022/08/13 10:48:05 [notice] 9#9: start worker process 15
+2022/08/13 10:48:05 [notice] 9#9: start worker process 16
+2022/08/13 10:48:05 [notice] 9#9: start worker process 17
+2022/08/13 12:19:52 [notice] 9#9: using the "epoll" event method
+2022/08/13 12:19:52 [notice] 9#9: nginx/1.22.0
+2022/08/13 12:19:52 [notice] 9#9: built by gcc 11.2.1 20220219 (Alpine 11.2.1_git20220219) 
+2022/08/13 12:19:52 [notice] 9#9: OS: Linux 5.15.0-46-generic
+2022/08/13 12:19:52 [notice] 9#9: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2022/08/13 12:19:52 [notice] 9#9: start worker processes
+2022/08/13 12:19:52 [notice] 9#9: start worker process 10
+2022/08/13 12:19:52 [notice] 9#9: start worker process 11
+2022/08/13 12:19:52 [notice] 9#9: start worker process 12
+2022/08/13 12:19:52 [notice] 9#9: start worker process 13
+2022/08/13 12:19:52 [notice] 9#9: start worker process 14
+2022/08/13 12:19:52 [notice] 9#9: start worker process 15
+2022/08/13 12:19:52 [notice] 9#9: start worker process 16
+2022/08/13 12:19:52 [notice] 9#9: start worker process 17

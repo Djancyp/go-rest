@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 
+	"github.com/Djancyp/go-rest/pkg/utils"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
@@ -42,19 +43,22 @@ func (e *Login) Login() (*User, *gorm.DB) {
 	}
 	return &user, db
 }
-func (e *User) Register() *User {
-	var jwtKey = []byte("my_secret_key")
+func (e *User) Register() (*User, error) {
+	err, _ := EmailValidate(e.Email)
+	if err == true {
+		return nil, fmt.Errorf("Email already exists")
+	}
+	fmt.Println(err)
 	password, _ := bcrypt.GenerateFromPassword([]byte(e.Password), 12)
-	token := jwt.New(jwt.SigningMethodHS256)
-	tokenString, _ := token.SignedString(jwtKey)
+	token := utils.CreateJwtString()
 	user := User{
 		Email:    e.Email,
 		Password: string(password),
-		Token:    tokenString,
+		Token:    token,
 	}
 	db.NewRecord(user)
 	db.Create(&user)
-	return &user
+	return &user, nil
 }
 
 func GetUserById(Id uint64) (*User, *gorm.DB) {
