@@ -4,6 +4,11 @@ This is a startup template for Golang.
 
 ## Stracture
 
+## As a fist think
+-- Make sure you don't have anything runs on port 80
+
+Can be APACHE running on the background.
+
 ### Docker Containers
 nginx , mysql and api(Golang).
 

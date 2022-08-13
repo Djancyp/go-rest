@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/Djancyp/go-rest/pkg/utils"
 	"github.com/golang-jwt/jwt/v4"
@@ -10,12 +11,15 @@ import (
 )
 
 type User struct {
-	gorm.Model
-	Email    string `gorm:"unique;not null" json:"email"`
-	Password string `gorm:"not null" json:"password"`
-	Token    string `gorm:"not null" json:"token"`
-	IsActive bool   `gorm:"not null" json:"is_active"`
-	Role     []Role `gorm:"foreignKey:ID"`
+	ID                 uint64 `gorm:"primaryKey" json:"id"`
+	CreatedAt          time.Time
+	UpdatedAt          time.Time
+	Email              string `gorm:"unique;not null" json:"email"`
+	Password           string `gorm:"not null" json:"password"`
+	Token              string `gorm:"not null" json:"token"`
+	IsActive           bool   `gorm:"not null" json:"is_active"`
+	Role               []Role `gorm:"many2many:user_role;"`
+	ForgotenPassworJWT string `json:"forgoten_password_jwt"`
 }
 type Role struct {
 	gorm.Model
@@ -24,7 +28,7 @@ type Role struct {
 
 type Login struct {
 	Email    string `gorm:"unique;not null" json:"email"`
-	Password string `gorm:"not null" json:"password" json:"-"`
+	Password string `gorm:"not null" json:"password"`
 }
 type Claims struct {
 	Username string `json:"username"`
@@ -33,7 +37,8 @@ type Claims struct {
 
 func (e *Login) Login() (*User, *gorm.DB) {
 	var user User
-	db := db.Where(map[string]interface{}{"email": e.Email}).First(&user)
+	db := db.Table("users").Where("email = ?", e.Email).Scan(&user)
+	fmt.Println(user)
 	if db.First(&user).RecordNotFound() {
 		return nil, db
 	}

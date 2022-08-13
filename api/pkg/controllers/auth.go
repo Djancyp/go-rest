@@ -3,41 +3,43 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
+
 	models "github.com/Djancyp/go-rest/pkg/models"
 	"github.com/Djancyp/go-rest/pkg/utils"
-	"net/http"
 )
+
+type Message struct {
+	ID    uint64 `json:"id"`
+	Email string `json:"email"`
+}
+type ErrMessage struct {
+	Message string `json:"message"`
+}
 
 func LoginAuth(w http.ResponseWriter, r *http.Request) {
 	LoginAuth := &models.Login{}
+	var errMessage ErrMessage
 	utils.ParsBody(r, LoginAuth)
 	b, _ := LoginAuth.Login()
-	errRespose := map[string]string{}
 	if b == nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		errRespose["message"] = "Unauthorized"
-		res, _ := json.Marshal(errRespose)
-		w.Write(res)
-		return
+		errMessage.Message = "Unauthorized"
+		utils.ReturnErr(w, r, errMessage, 401)
 	}
 	token, expirationTime, err := utils.CreateJwtWithClaim(b.Email)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		errRespose["message"] = "Internal Sercer Error"
-		res, _ := json.Marshal(errRespose)
-		w.Write(res)
-		return
+		errMessage.Message = "StatusInternalServerError"
+		utils.ReturnErr(w, r, errMessage, 500)
 	}
 	http.SetCookie(w, &http.Cookie{
 		Name:    "token",
 		Value:   token,
 		Expires: expirationTime,
 	})
-	succsesRespond := map[string]string{}
-	succsesRespond["message"] = "success"
-	res, _ := json.Marshal(succsesRespond)
-	w.WriteHeader(http.StatusOK)
-	w.Write(res)
+	var message Message
+	message.ID = b.ID
+	message.Email = b.Email
+	utils.ReturnSuccses(w, r, message)
 }
 
 type RegisterRes struct {
@@ -52,15 +54,10 @@ func AuthRegister(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-
-	b.Password = ""
-	b.Token = ""
 	returnUser := &RegisterRes{
 		Email: b.Email,
 	}
-	res, _ := json.Marshal(returnUser)
-	w.WriteHeader(http.StatusOK)
-	w.Write(res)
+	utils.ReturnSuccses(w, r, returnUser)
 }
 
 type Body struct {
@@ -68,17 +65,15 @@ type Body struct {
 }
 
 func Refresh(w http.ResponseWriter, r *http.Request) {
-	errRespose := map[string]string{}
+	var errRespose ErrMessage
 	cookie, err := r.Cookie("token")
 	if err != nil {
 		if err == http.ErrNoCookie {
-			w.WriteHeader(http.StatusUnauthorized)
-			errRespose["message"] = "Unauthorized"
-			w.Write([]byte(errRespose["message"]))
-			return
+			errRespose.Message = "Unauthorized"
+			utils.ReturnErr(w, r, errRespose, http.StatusUnauthorized)
 		}
-		w.WriteHeader(http.StatusBadRequest)
-		return
+		errRespose.Message = "Bad Request"
+		utils.ReturnErr(w, r, errRespose, http.StatusBadRequest)
 	}
 	tokenStr := cookie.Value
 	token, expirationTime, err := utils.RefreshJwt(tokenStr)
