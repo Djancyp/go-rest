@@ -352,3 +352,4 @@
 2022/08/14 10:44:51 [notice] 9#9: start worker process 15
 2022/08/14 10:44:51 [notice] 9#9: start worker process 16
 2022/08/14 10:44:51 [notice] 9#9: start worker process 17
+2022/08/14 21:13:55 [notice] 17#17: signal 1 (SIGHUP) received, ignoring

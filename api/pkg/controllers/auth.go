@@ -2,10 +2,9 @@ package controllers
 
 import (
 	"encoding/json"
-	"net/http"
-
 	models "github.com/Djancyp/go-rest/pkg/models"
 	"github.com/Djancyp/go-rest/pkg/utils"
+	"net/http"
 )
 
 type Message struct {
