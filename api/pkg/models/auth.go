@@ -10,19 +10,22 @@ import (
 )
 
 type User struct {
-	ID                 uint64 `gorm:"primaryKey" json:"id"`
-	CreatedAt          time.Time
-	UpdatedAt          time.Time
-	Email              string `gorm:"unique;not null" json:"email"`
-	Password           string `gorm:"not null" json:"password"`
-	Token              string `gorm:"not null" json:"token"`
-	IsActive           bool   `gorm:"not null" json:"is_active"`
-	Role               []Role `gorm:"many2many:user_role;"`
-	ForgotenPassworJWT string `json:"forgoten_password_jwt"`
+	ID                 uint64    `gorm:"primaryKey" json:"id"`
+	CreatedAt          time.Time `json:"created_at"`
+	UpdatedAt          time.Time `json:"updated_at"`
+	Email              string    `gorm:"unique;not null" json:"email"`
+	Password           string    `gorm:"not null" json:"password"`
+	Token              string    `gorm:"not null" json:"token"`
+	IsActive           bool      `gorm:"not null" json:"is_active"`
+	Role               []Role    `gorm:"many2many:user_role;"`
+	ForgotenPassworJWT string    `json:"forgoten_password_jwt"`
 }
 type Role struct {
-	gorm.Model
-	Name string
+	ID        uint64    `gorm:"primaryKey" json:"id"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+	Role      string    `json:"role"`
+	Uuid      string    `gorm:"unique;not null" json:"uuid"`
 }
 
 type Login struct {
