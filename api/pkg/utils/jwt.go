@@ -1,12 +1,13 @@
 package utils
 
 import (
+	"github.com/Djancyp/go-rest/pkg/config"
 	"github.com/golang-jwt/jwt/v4"
 	"time"
 )
 
 // TODO: get key from .env
-var jwtKey = []byte("my_secret_key")
+var jwtKey = []byte(config.GetConfig("GOLANG_JWT_KEY"))
 var expireMinute = 1
 
 type Claims struct {

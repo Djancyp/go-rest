@@ -28,9 +28,10 @@ services:
   #  Golang Rest Api
   app:
     container_name: ${PROJECT_NAME}-api
+    env_file: .env
     build:
-      dockerfile: ./Dockerfile
-      context: docker/golang
+      dockerfile: ./docker/golang/Dockerfile
+      context: .
       target: dev
     volumes:
       - ./api/:/opt/app/api

@@ -64,7 +64,6 @@ func (e *User) Register() (*User, error) {
 	return &user, nil
 }
 func (e *User) UpdatePassword() (*User, *gorm.DB) {
-	fmt.Println(e.Password)
 	var user User
 	db := db.Table("users").Where("email = ?", e.Email).Scan(&user)
 	if db.First(&user).RecordNotFound() {
@@ -82,7 +81,6 @@ func (e *User) UpdatePassword() (*User, *gorm.DB) {
 func GetUserById(Id uint64) (*User, *gorm.DB) {
 	var user User
 	db := db.Where("id = ?", Id).Find(&user)
-	fmt.Println(user)
 	return &user, db
 }
 
