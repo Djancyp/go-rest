@@ -25,6 +25,8 @@ Can be swap with any db container but I like to use mysql.
 - DB integration
 - example route , controller , 
 - middlewares (rest logger , session , cors)
+- Auth with JWT
+
 
 ## Installation
 ### Requirements.
@@ -50,6 +52,33 @@ docker-compose up
 ``````
 🚀 Yuhii app is up and running.
 Now you can check server on browser [https://www.golangrest.loc](https://www.golangrest.loc)
+
+### Auth api
+### -- Register user
+```json
+Endpoint: /register
+Method: Post
+req: {
+    "username": "username",
+    "password": "password"
+    }
+``````
+### -- Login
+
+```json
+Endpoint: /login
+Method: Post
+req: {
+    "username": "username",
+    "password": "password"
+    }
+``````
+### -- refresh token
+
+```json
+Endpoint: /refresh
+Method: Get
+``````
 
 ### Build in example endpoints.
 - /example (GET) (Get all examples)
