@@ -17,6 +17,7 @@ func Connect() {
 	project_name := GetConfig("PROJECT_NAME")
 	var err error
 	db, err = gorm.Open(host, user+":"+password+"@("+project_name+"-db)/"+database+"?charset=utf8&parseTime=True&loc=Local")
+	db.LogMode(true)
 	if err != nil {
 		panic(err)
 	}

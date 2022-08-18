@@ -39,7 +39,7 @@ func LoginAuth(w http.ResponseWriter, r *http.Request) {
 	var message Message
 	message.ID = b.ID
 	message.Email = b.Email
-	utils.ReturnSuccses(w, r, message)
+	utils.ReturnSuccses(w, r, b)
 }
 
 type RegisterRes struct {
@@ -130,31 +130,31 @@ func PassworRecovery(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
+type AuthRole struct {
+	ID   uint64 `json:"id"`
+	Role string `json:"role"`
+}
+
+func AddRole(w http.ResponseWriter, r *http.Request) {
+
+}
+
 // auth middleware
 
 // Example of router middlewares
 // Usage: wrap handler with auth func
 func Auth(HandlerFunc http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		cookie, err := r.Cookie("token")
-		var resMessage ErrMessage
-		if err != nil {
-			if err == http.ErrNoCookie {
-				resMessage.Message = "Unauthorized"
-				utils.ReturnErr(w, r, resMessage, http.StatusInternalServerError)
-				return
-			}
-			resMessage.Message = "Bad Request"
-			utils.ReturnErr(w, r, resMessage, http.StatusBadRequest)
-			return
+		utils.AuthCookie(w, r)
+		w.WriteHeader(http.StatusOK)
+		HandlerFunc(w, r)
+	}
+}
 
-		}
-		tkn, err := utils.ValidateJwt(cookie.Value)
-		if err != nil || !tkn.Valid {
-			resMessage.Message = "Unauthorized"
-			utils.ReturnErr(w, r, resMessage, http.StatusUnauthorized)
-			return
-		}
+// auth type check middleware
+func AuthRoles(HandlerFunc http.HandlerFunc, roles []AuthRole) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		utils.AuthCookie(w, r)
 		w.WriteHeader(http.StatusOK)
 		HandlerFunc(w, r)
 	}

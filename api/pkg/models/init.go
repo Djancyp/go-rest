@@ -6,6 +6,7 @@ import (
 
 	"github.com/Djancyp/go-rest/pkg/config"
 	"github.com/jinzhu/gorm"
+	// "golang.org/x/crypto/bcrypt"
 )
 
 var db *gorm.DB
@@ -22,23 +23,15 @@ func init() {
 	// Add default roles if roles has no value
 	db.AutoMigrate(&Role{})
 	if err := db.First(&Role{}).Error; errors.Is(err, gorm.ErrRecordNotFound) {
-		// data := Roles{[]Role{
-		// 	{Role: "superuser", Uuid: "xsuper"},
-		// 	{Role: "admin", Uuid: "xadmin"},
-		// }}
-		// for _, v := range data.Role {
-		// 	db.Create(&v)
-		//
-		// }
-		db.Create(&User{
-			Email:    "superuser@gmail.com",
-			Password: "admin",
-			Role: []Role{
-				{Role: "superuser", Uuid: "xsuper"},
-				{Role: "admin", Uuid: "xadmin"},
-			},
-		})
+
+		roles := []Role{
+			{Role: "superuser", Description: "Use for superprevilage. Access level 1"},
+			{Role: "admin"},
+			{Role: "user"},
+		}
+		for _, role := range roles {
+			db.Create(&role)
+		}
 		fmt.Println("Insert seed data")
 	}
-	// }
 }

@@ -2,6 +2,11 @@
 
 This is a startup template for Golang.
 
+## Important
+
+This project is not stabel. Currently on development
+
+
 ## Stracture
 
 ## As a fist think
