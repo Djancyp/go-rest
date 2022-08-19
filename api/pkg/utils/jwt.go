@@ -1,9 +1,10 @@
 package utils
 
 import (
+	"time"
+
 	"github.com/Djancyp/go-rest/pkg/config"
 	"github.com/golang-jwt/jwt/v4"
-	"time"
 )
 
 // TODO: get key from .env
@@ -11,7 +12,8 @@ var jwtKey = []byte(config.GetConfig("GOLANG_JWT_KEY"))
 var expireMinute = 1
 
 type Claims struct {
-	Email string `json:"username"`
+	Role  interface{} `json:"role"`
+	Email string      `json:"username"`
 	jwt.StandardClaims
 }
 
@@ -21,10 +23,10 @@ func CreateJwtString() string {
 	return tokenString
 }
 
-func CreateJwtWithClaim(email string) (string, time.Time, error) {
+func CreateJwtWithClaim(email string, roles interface{}) (string, time.Time, error) {
 	var expirationTime = time.Now().Add(1 * time.Minute)
-
 	claims := &Claims{
+		Role:  roles,
 		Email: email,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),

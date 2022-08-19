@@ -3,11 +3,12 @@ package models
 import (
 	"errors"
 	"fmt"
+	"time"
+
 	"github.com/Djancyp/go-rest/pkg/utils"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
-	"time"
 )
 
 type User struct {

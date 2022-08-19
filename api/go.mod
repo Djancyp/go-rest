@@ -8,6 +8,7 @@ require (
 	github.com/gorilla/sessions v1.2.1
 	github.com/jinzhu/gorm v1.9.16
 	github.com/joho/godotenv v1.4.0
+	github.com/mitchellh/mapstructure v1.5.0
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa
 )
 

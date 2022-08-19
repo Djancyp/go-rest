@@ -59,6 +59,7 @@ docker-compose up
 Now you can check server on browser [https://www.golangrest.loc](https://www.golangrest.loc)
 
 ### Auth api
+
 ### -- Register user
 ```json
 Endpoint: /register

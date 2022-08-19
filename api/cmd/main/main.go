@@ -14,8 +14,8 @@ func main() {
 	api_domain := config.GetConfig("API_DOMAIN")
 	r := mux.NewRouter()
 	// register routers
-	//end of register routers
 	routers.RouterInit(r)
+	//end of register routers
 	fmt.Println("========================================")
 	fmt.Printf("You can access website:, https://%s", api_domain)
 	fmt.Println("")
@@ -24,5 +24,4 @@ func main() {
 	fmt.Println("========================================")
 	fmt.Println("")
 	log.Fatal(http.ListenAndServe(":"+port, r))
-
 }

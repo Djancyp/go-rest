@@ -14,7 +14,8 @@ var RegisterAuthRouters = func(router *mux.Router) {
 	router.HandleFunc("/forgot-password", controllers.PassworRecovery).Methods("POST")
 	//TODO add route for add, delete ,update types
 	auth_role := []controllers.AuthRole{
-		{ID: 1, Role: "superuser"},
+		{ID: 2, Role: "admin"},
+		{ID: 1, Role: "user"},
 	}
-	router.HandleFunc("/auth-role", controllers.AuthRoles(controllers.AddRole, auth_role)).Methods("POST")
+	router.HandleFunc("/auth-roles", controllers.AuthRoles(controllers.AddRole, auth_role)).Methods("POST")
 }

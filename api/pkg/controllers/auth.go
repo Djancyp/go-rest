@@ -2,9 +2,11 @@ package controllers
 
 import (
 	"encoding/json"
+	"net/http"
+
 	models "github.com/Djancyp/go-rest/pkg/models"
 	"github.com/Djancyp/go-rest/pkg/utils"
-	"net/http"
+	"github.com/mitchellh/mapstructure"
 )
 
 type Message struct {
@@ -25,7 +27,7 @@ func LoginAuth(w http.ResponseWriter, r *http.Request) {
 		utils.ReturnErr(w, r, errMessage, 401)
 		return
 	}
-	token, expirationTime, err := utils.CreateJwtWithClaim(b.Email)
+	token, expirationTime, err := utils.CreateJwtWithClaim(b.Email, b.Roles)
 	if err != nil {
 		errMessage.Message = "StatusInternalServerError"
 		utils.ReturnErr(w, r, errMessage, 500)
@@ -146,16 +148,47 @@ func AddRole(w http.ResponseWriter, r *http.Request) {
 func Auth(HandlerFunc http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		utils.AuthCookie(w, r)
-		w.WriteHeader(http.StatusOK)
 		HandlerFunc(w, r)
 	}
+}
+
+type Role struct {
+	ID          uint64 `json:"id"`
+	Role        string `json:"role"`
+	Description string `json:"description"`
 }
 
 // auth type check middleware
 func AuthRoles(HandlerFunc http.HandlerFunc, roles []AuthRole) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		utils.AuthCookie(w, r)
-		w.WriteHeader(http.StatusOK)
+		cookie, err := r.Cookie("token")
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+		claims, _ := utils.GetJwtClaims(cookie.Value)
+		var claims_roles []Role
+		mapstructure.Decode(claims.Role, &claims_roles)
+		// check if y contains role
+		result := compairAuth(claims_roles, roles)
+		if !result {
+			w.WriteHeader(http.StatusUnauthorized)
+			w.Write([]byte("Unauthorized"))
+			return
+		}
 		HandlerFunc(w, r)
 	}
+}
+func compairAuth(claims_roles []Role, roles []AuthRole) bool {
+	for _, claims_role := range claims_roles {
+		for _, v2 := range roles {
+			if v2.Role == claims_role.Role {
+				return true
+			}
+		}
+
+	}
+
+	return false
 }
